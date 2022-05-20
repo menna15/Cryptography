@@ -1,97 +1,45 @@
-#!/usr/bin/env python
-
-#-------------------------------------------------
-#                      IMPORTS
-#-------------------------------------------------
-import asyncio
-import time
-import websockets
-import random
-import math
+import socket
 import json
+import senderClass as sc
+#--------------------------------------------------------------
+# initialize the socket 
+#--------------------------------------------------------------
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+host=socket.gethostname()
+port=7634  
+s.connect((host,port))
 
-#-------------------------------------------------
-#   Calculate m ^ e mod n
-#-------------------------------------------------
-def PowMod(m, e, n):
-    if e == 0:
-        return 1 % n
-    elif e == 1:
-        return m % n
-    else:
-        b = PowMod(m, e // 2, n)
-        b = b * b % n
-        if e % 2 == 0:
-          return b
-        else:
-          return b * m % n
-#-------------------------------------------------
-#                 Encryption
-#-------------------------------------------------
+#--------------------------------------------------------------
+# initialize instance from the sender class
+#--------------------------------------------------------------
+sender = sc.sender() 
 
-def cipher(m, e, n):
-    return PowMod(m, e, n)
+#--------------------------------------------------------------------
+# Start the communication by receiving the public key from the sender
+#--------------------------------------------------------------------
 
-#-------------------------------------------------
-#       Convert String to List of ascii codes
-#-------------------------------------------------
-def str2asci(st):
-    dec_list = []
-    for i in st:
-        dec_list.append(ord(i))
-    return dec_list
+keys = s.recv(1024).decode()
+keys = json.loads(keys)
+e = keys[0]
+n = keys[1]
+    
+#--------------------------------------------------------------
+#     sending ....
+#--------------------------------------------------------------
+# print("e",e)
+# print("n",n)
+sender.e = e
+sender.n = n  
 
-#-------------------------------------------------
-#       Convert List of ascii codes to String 
-#-------------------------------------------------
-def asci2str(dec):
-    str_list = []
-    for i in dec:
-        str_list.append(chr(i))
-    return ''.join(str_list)
-
-#-------------------------------------------------
-#       Start Transmission
-#-------------------------------------------------
-async def transmitt():
-    async with websockets.connect('ws://localhost:8765') as websocket:
-        firstTime = 0
-        keys = await websocket.recv()
-        keys = json.loads(keys)
-        n = keys[0]
-        e = keys[1]
-        print(" Received < public key : ( e = {} , n = {})".format(e,n))
-
-        msg = "{}".format("public key received")
-        await websocket.send(msg)  
-
-        while True:
-            message = input("Message : ")
-            message_dec = str2asci(message)
-            print("encoding : {}".format(message_dec))
-            time1 = time.time()
-            encrypted = [cipher(i, e, n) for i in message_dec]
-            time2 = time.time()
-            # write the encryption time to a script
-            if(not firstTime):
-                f = open('result.txt','a')
-                f.write("t = {}\n".format(time2-time1))
-                f.close()
-            ##
-            s = json.dumps(encrypted)
-            await websocket.send(s)
-            print("sent > {}".format(s))
-            firstTime = 1
-            # try :
-            #     received_msg = await websocket.recv()
-            #     print("Received < {}".format(received_msg))
-            # except websockets.exceptions.ConnectionClosed:
-            #     break
-            if message == 'close':
-                    break
-
-#-------------------------------------------------
-#              Run the programe
-#-------------------------------------------------
-
-asyncio.get_event_loop().run_until_complete(transmitt())
+while True:
+    # try:
+        M = input("type the message to be sent : > ")
+        cipher_text= sender.encrypt(M)   
+        print("cipher sent : ",cipher_text) 
+        s.send(cipher_text.encode())   
+        
+        # with open('inputs.txt', 'a') as f:
+        #     f.write("message : " + M + "\n")
+        # f.close() 
+    # except:
+    #     s.close() 
