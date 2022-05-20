@@ -38,8 +38,8 @@ while True:
         print("cipher sent : ",cipher_text) 
         s.send(cipher_text.encode())   
         
-        # with open('inputs.txt', 'a') as f:
-        #     f.write("message : " + M + "\n")
-        # f.close() 
+        with open('inputs.txt', 'a') as f:
+            f.write("message : " + M + "\n")
+        f.close() 
     # except:
     #     s.close() 
