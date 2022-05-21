@@ -104,21 +104,29 @@ def generate_r(n):
 # Check if prime
 #----------------------------------------------
 def prime(num):
-   return num > 1 and all(num % i for i in range(2,int(math.sqrt(num))+1))
+   return (num > 1 and all(num % i for i in range(2,int(math.sqrt(num))+1)))
 #-------------------------------------------------
 #   Generate primes numbers with variable n bits 
 #-------------------------------------------------      
 def generate_primes(nbits):
     p = random.getrandbits(int(nbits/2))
-    while(not prime(p)):
-        p = random.getrandbits(int(nbits/2))
     q = random.getrandbits(int(nbits/2))
-    while(not (prime(q)) or p == q):
+    while not prime(p):
+        p = random.getrandbits(int(nbits/2))
+    while not prime(q) or p == q:
         q = random.getrandbits(int(nbits/2))
     return p , q
 
-# p,q=generate_primes(9)
+# p,q=generate_primes(110)
 # print(p,q)
+
+#20
+#25
+#30
+#40 
+#50 
+#70
+#90
 
 
 
