@@ -54,8 +54,6 @@ def asci2str(dec):
     return ''.join(str_list)
 
 #-------------------------------------------------
-
-#-------------------------------------------------
 #             Extend Ecludiean
 #-------------------------------------------------
 def ExtendedEuclid(a, b):
@@ -100,12 +98,35 @@ def generate_r(n):
        e = random.randint(2,n)
     return e 
 
-
 #----------------------------------------------
 # Check if prime
 #----------------------------------------------
-def prime(num):
-   return (num > 1 and all(num % i for i in range(2,int(math.sqrt(num))+1)))
+
+
+def Right_to_Left_Binary_Modular_Exponentiation(b,e,n):    # y = b^e (mod n)
+    A = 1
+    S = b
+    e_ = str(bin(e).replace("0b",""))
+    for i in range (len(e_)-1, -1,-1):   # start from k-1 ,end 0 ,step -1
+        if e_[i] == '1':
+            A = (A * S) % (n)
+        S = (S * S) % (n)
+    return A
+
+def ISprime(n):
+
+    if n == 1 or n == 4:
+            return False
+    elif n == 2 or n == 3:
+        return True
+
+    for i in range(10000):
+        a = random.randint(2, n + 1)
+        if Right_to_Left_Binary_Modular_Exponentiation(a, n - 1, n) != 1:
+            return False
+    return True
+
+def prime(num): return (num > 1 and all(num % i for i in range(2,int(math.sqrt(num))+1)))
 
 #-------------------------------------------------
 #           Generate primes numbers 
@@ -131,7 +152,7 @@ def generate_primes_bits(nbits):
         q = random.getrandbits(int(nbits/2))
     return p , q
 
-# p,q=generate_primes(110)
+# p,q=generate_primes_bits(150)
 # print(p,q)
 
 #20

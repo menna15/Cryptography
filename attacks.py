@@ -39,12 +39,19 @@ if __name__ == __name__:
     alice = sc.sender()
 
     # read p and q values
-    p_q = open("p_q.txt", "r")
-    lines = p_q.read().splitlines()
-    p_q.close()
-    bob.p = int(lines[0])
-    bob.q = int(lines[1])
+    p = 0
+    q = 0
+    choice = int(input("\n(1) keys with specific bit size  \n(else) keys with specific hard-coded p, q \nChoice: "))
+    if (choice == 1):
+        size = int (input("Enter the key size(bits): "))    
+        p,q = ut.generate_primes_bits(size)
 
+    else:
+        p = 2475730193
+        q = 908416969
+        
+    bob.p = p
+    bob.q = q
     # set value of e and n for both sender and receiver 
     bob.e = ut.generate_e(bob.p,bob.q)
     bob.n = bob.p * bob.q

@@ -23,9 +23,16 @@ receiver= rc.receiver()
 #--------------------------------------------------------------
 # Read the values of P , Q from a file or generate them randomly
 #--------------------------------------------------------------
+p = 0
+q = 0
+choice = int(input("\n(1) keys with specific bit size  \n(else) keys with specific hard-coded p, q \nChoice: "))
+if (choice == 1):
+    size = int (input("Enter the key size(bits): "))    
+    p,q = ut.generate_primes_bits(size)
 
-p = 2475730193
-q = 908416969
+else:
+    p = 2475730193
+    q = 908416969
 
 #--------------------------------------------------------------
 # generate the public key of the reciever
