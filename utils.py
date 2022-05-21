@@ -54,40 +54,6 @@ def asci2str(dec):
     return ''.join(str_list)
 
 #-------------------------------------------------
-#              Generation of primes
-#-------------------------------------------------
-def generate_prime(beg=7, end=10000):
-    rand_number = random.randint(beg, end)
-    if rand_number % 2 == 0:
-        rand_number += 1
-        
-    for prime in range(rand_number, end, 2):
-
-        isPrime = True
-        for num in range(3, math.floor(prime/2), 2):
-            if prime % num == 0:
-                isPrime = False
-
-        if isPrime:
-            return prime
-
-#-------------------------------------------------
-#              Generation of primes by bits
-#-------------------------------------------------
-def generate_prime_bits(num_of_bits=10000):
-    rand_number = random.getrandbits(num_of_bits)
-    if rand_number % 2 == 0:
-        rand_number += 1
-        
-    for prime in range(rand_number, 1<<num_of_bits, 2):
-
-        isPrime = True
-        for num in range(3, math.floor(prime/2), 2):
-            if prime % num == 0:
-                isPrime = False
-
-        if isPrime:
-            return prime
 
 #-------------------------------------------------
 #             Extend Ecludiean
@@ -132,7 +98,27 @@ def generate_r(n):
     e = random.randint(2,n) 
     while not math.gcd(e, n) == 1:
        e = random.randint(2,n)
-    return e   
+    return e 
+
+#----------------------------------------------
+# Check if prime
+#----------------------------------------------
+def prime(num):
+   return num > 1 and all(num % i for i in range(2,int(math.sqrt(num))+1))
+#-------------------------------------------------
+#   Generate primes numbers with variable n bits 
+#-------------------------------------------------      
+def generate_primes(nbits):
+    p = random.getrandbits(int(nbits/2))
+    while(not prime(p)):
+        p = random.getrandbits(int(nbits/2))
+    q = random.getrandbits(int(nbits/2))
+    while(not (prime(q)) or p == q):
+        q = random.getrandbits(int(nbits/2))
+    return p , q
+
+# p,q=generate_primes(9)
+# print(p,q)
 
 
 
