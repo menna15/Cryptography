@@ -14,6 +14,23 @@ time_list = []
 p_q = open("test_cases.txt", "r")
 lines = p_q.read().splitlines()
 p_q.close()
+
+ciphers_file = open("ciphers.txt", "r")
+ciphers = ciphers_file.read().splitlines()
+ciphers_file.close()
+
+time_math = []
+time_CCA = []
+for cipher in ciphers:
+    start = time.time_ns()
+    deciphered_text = at.mathematical_attack(ut.int2str(cipher),e,n)
+    time_math.append(time.time_ns() - start)
+
+    start = time.time_ns()
+    deciphered_text = at.CCA(cipher,e,n)
+    time_CCA.append(time.time_ns() - start)
+
+
 i = 0
 M = "Menna"
 print(len(lines))

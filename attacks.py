@@ -29,70 +29,72 @@ def mathematical_attack(cipher, e, n):
             deciphered = bob.decrypt(cipher)
             print(deciphered)
     return deciphered
-# ---------------------------------------
-#     Initialize sender and reciever
-#----------------------------------------
-bob = rc.receiver()
 
-alice = sc.sender()
+if __name__ == __name__:
+    # ---------------------------------------
+    #     Initialize sender and reciever
+    #----------------------------------------
+    bob = rc.receiver()
 
-# read p and q values
-p_q = open("p_q.txt", "r")
-lines = p_q.read().splitlines()
-p_q.close()
-bob.p = int(lines[0])
-bob.q = int(lines[1])
+    alice = sc.sender()
 
-# set value of e and n for both sender and receiver 
-bob.e = ut.generate_e(bob.p,bob.q)
-bob.n = bob.p * bob.q
+    # read p and q values
+    p_q = open("p_q.txt", "r")
+    lines = p_q.read().splitlines()
+    p_q.close()
+    bob.p = int(lines[0])
+    bob.q = int(lines[1])
 
-alice.e = bob.e
-alice.n = bob.n
+    # set value of e and n for both sender and receiver 
+    bob.e = ut.generate_e(bob.p,bob.q)
+    bob.n = bob.p * bob.q
 
-#--------------------------------------- attack ----------------------
+    alice.e = bob.e
+    alice.n = bob.n
 
-# alice will send message to bob
-M = input("type the message to be sent : > ")
-cipher_text= alice.encrypt(M)   
- 
-# save the cipher , n and e  in a text to simulate the attack by eva
-with open('ciphers.txt', 'w') as f:
-    f.write(str(ut.str2int(cipher_text)) + "\n")
-    f.write(str(bob.e) + "\n")
-    f.write(str(bob.n) + "\n")
-f.close() 
+    #--------------------------------------- attack ----------------------
 
-# Eva entercpt ciphers , e and n
-attacker = open("ciphers.txt", "r")
-lines = attacker.read().splitlines()
-attacker.close()
-C = int(lines[0])
-e = int(lines[1])
-n = int(lines[2])
+    # alice will send message to bob
+    M = input("type the message to be sent : > ")
+    cipher_text= alice.encrypt(M)   
+    
+    # save the cipher , n and e  in a text to simulate the attack by eva
+    with open('ciphers.txt', 'w') as f:
+        f.write(str(ut.str2int(cipher_text)) + "\n")
+        f.write(str(bob.e) + "\n")
+        f.write(str(bob.n) + "\n")
+    f.close() 
 
-#-------------------------------------------------------------
-#                     Run the program 
-#-------------------------------------------------------------
-while True:
-    attack_type = input("please enter the attack type : ")
-    if attack_type == '.':
-        break
-    elif int(attack_type) == 1:
-        deciphered_text = CCA(C,e,n)
-        with open('CCA_outputs.txt', 'a') as f:
-                f.write("original message: " + M + "\n")
-                f.write("attacker output : " + deciphered_text + "\n")
-        f.close()
-    elif int(attack_type) == 2:
-        deciphered_text = mathematical_attack(ut.int2str(C),e,n)
-        with open('MA_outputs.txt', 'a') as f:
-            
-                f.write("original message: " + M + "\n")
-                f.write("attacker output : " + deciphered_text + "\n")
-        f.close()
-    else:
-        print("please chose one of the options ")
+    # Eva entercpt ciphers , e and n
+    attacker = open("ciphers.txt", "r")
+    lines = attacker.read().splitlines()
+    attacker.close()
+    C = int(lines[0])
+    e = int(lines[1])
+    n = int(lines[2])
+
+    #-------------------------------------------------------------
+    #                     Run the program 
+    #-------------------------------------------------------------
+    while True:
+        attack_type = input("please enter the attack type : ")
+        if attack_type == '.':
+            break
+        elif int(attack_type) == 1:
+            deciphered_text = CCA(C,e,n)
+            with open('CCA_outputs.txt', 'a') as f:
+                    f.write("original message: " + M + "\n")
+                    f.write("attacker output : " + deciphered_text + "\n")
+            f.close()
+        elif int(attack_type) == 2:
+            deciphered_text = mathematical_attack(ut.int2str(C),e,n)
+            with open('MA_outputs.txt', 'a') as f:
+                
+                    f.write("original message: " + M + "\n")
+                    f.write("attacker output : " + deciphered_text + "\n")
+            f.close()
+        else:
+            print("please chose one of the options ")
 
 
 

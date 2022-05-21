@@ -100,15 +100,29 @@ def generate_r(n):
        e = random.randint(2,n)
     return e 
 
+
 #----------------------------------------------
 # Check if prime
 #----------------------------------------------
 def prime(num):
    return (num > 1 and all(num % i for i in range(2,int(math.sqrt(num))+1)))
+
+#-------------------------------------------------
+#           Generate primes numbers 
+#-------------------------------------------------  
+def generate_prime(beg=7, end=10000):
+    p = random.randint(beg, end)
+    q = random.randint(beg, end)
+    while not prime(p):
+        p = random.randint(beg, end)
+    while not prime(q) or p == q:
+        q = random.randint(beg, end)
+    return p , q 
+    
 #-------------------------------------------------
 #   Generate primes numbers with variable n bits 
 #-------------------------------------------------      
-def generate_primes(nbits):
+def generate_primes_bits(nbits):
     p = random.getrandbits(int(nbits/2))
     q = random.getrandbits(int(nbits/2))
     while not prime(p):
