@@ -57,11 +57,29 @@ def asci2str(dec):
 #              Generation of primes
 #-------------------------------------------------
 def generate_prime(beg=7, end=10000):
-    rand_number = random.randint(beg, end);
+    rand_number = random.randint(beg, end)
     if rand_number % 2 == 0:
         rand_number += 1
         
     for prime in range(rand_number, end, 2):
+
+        isPrime = True
+        for num in range(3, math.floor(prime/2), 2):
+            if prime % num == 0:
+                isPrime = False
+
+        if isPrime:
+            return prime
+
+#-------------------------------------------------
+#              Generation of primes by bits
+#-------------------------------------------------
+def generate_prime_bits(num_of_bits=10000):
+    rand_number = random.getrandbits(num_of_bits)
+    if rand_number % 2 == 0:
+        rand_number += 1
+        
+    for prime in range(rand_number, 1<<num_of_bits, 2):
 
         isPrime = True
         for num in range(3, math.floor(prime/2), 2):
@@ -97,7 +115,7 @@ def generate_n(p, q):
     return p * q
 
 #-------------------------------------------------
-#   Generate n : the second number in public key
+#   Generate e : the second number in public key
 #-------------------------------------------------
 def generate_e(p, q):
     phi = (p-1) * (q-1)
