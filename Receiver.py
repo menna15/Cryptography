@@ -25,10 +25,22 @@ receiver= rc.receiver()
 #--------------------------------------------------------------
 p = 0
 q = 0
-choice = int(input("\n(1) keys with specific bit size  \n(else) keys with specific hard-coded p, q \nChoice: "))
+choice = int(input("\n(1) keys with specific bit size  \n(2) enter your  p, q \nChoice: "))
 if (choice == 1):
     size = int (input("Enter the key size(bits): "))    
     p,q = ut.generate_primes_bits(size)
+
+if (choice == 2):
+    p = int(input("\nEnter p : "))
+    if(not ut.ISprime(p)):
+        while(not (ut.ISprime(p))):
+            p = int(input("\n Enter p , should be prime and != p : "))
+        
+    else:
+        q = int(input("\n Enter q : "))
+        while(not (ut.ISprime(q)) or p==q ):
+            q = int(input("\n Enter q , should be prime and != p : "))
+
 
 else:
     p = 2475730193
