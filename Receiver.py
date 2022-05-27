@@ -32,13 +32,13 @@ if (choice == 1):
 
 if (choice == 2):
     p = int(input("\nEnter p : "))
-    if(not ut.ISprime(p)):
-        while(not (ut.ISprime(p))):
+    if(not ut.prime(p)):
+        while(not (ut.prime(p))):
             p = int(input("\n Enter p , should be prime and != p : "))
         
     else:
         q = int(input("\n Enter q : "))
-        while(not (ut.ISprime(q)) or p==q ):
+        while(not (ut.prime(q)) or p==q ):
             q = int(input("\n Enter q , should be prime and != p : "))
 
 
